@@ -58,7 +58,8 @@ let highScoresIcon = document.getElementById('high-scores-icon');
 let highScoresDialog = document.getElementById('high-scores-dialog');
 let highScoresButton = document.getElementById('high-scores-button');
 
-let highScores = JSON.parse(localStorage.getItem('highScores'));
+let highScores = [];
+
 
 
 // MAZE GRID VARIABLES
@@ -98,7 +99,8 @@ let powerups = [horizontalPowerup, verticalPowerup, squareChange, colorSwitch];
 // maze setup onload/restart
 // Create maze and start timer onLoad
 window.addEventListener('load', (openPage));
-window.setInterval(timer, 1000);
+let timerInterval = setInterval(timer, 1000);
+
 
 function openPage() {
     createMaze();
@@ -106,7 +108,10 @@ function openPage() {
 }
 
 function createMaze() {
-    // reset character, timer, powerups, dialog
+    // set timer
+    if (!timerInterval)
+        {timerInterval = setInterval(timer, 1000);}
+    // reset character, time counters, powerups, dialog
     charTop = 0;
     charLeft = 0;
     character.style.transform = `translate(0px, 0px) `;
@@ -176,10 +181,13 @@ function timer() {
 // Populate High score list from local storage
 
 function populateHighScores() { 
-    for (let i=0; i < highScoresListItems.length; i++) {
-        if (highScores[i]) {
-            highScoresListItems[i].innerText = highScores[i].name + '  ' + highScores[i].time;
-            highScoresListItems[i].classList.remove('hidden');
+    if (localStorage.getItem('highScores') != null) {
+        highScores = JSON.parse(localStorage.getItem('highScores'));
+        for (let i=0; i < highScoresListItems.length; i++) {
+            if (highScores[i]) {
+                highScoresListItems[i].innerText = highScores[i].name + '  ' + highScores[i].time;
+                highScoresListItems[i].classList.remove('hidden');
+            }
         }
     }
 }
@@ -322,8 +330,10 @@ function mazeSpace() {
     else if (charTop === 13) {
         messageText.innerText = "You win!";
         messageTextSmall.innerText = "Your time was " + hoursNum + " hours, " + minutesNum + " minutes, " + secondsNum + " seconds. Play again?";
-        
-        if (highScores.length === 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+
+        if (highScores.length < 5) {
             {highScoreForm.classList.remove('display-none')}
         } 
         else if (currentTime < highScores[highScores.length - 1].time) {
@@ -418,6 +428,8 @@ function mazeSpace() {
             messageImg.innerHTML = '';
             closeDialog.classList.add('display-none');
             restartMaze.classList.remove('display-none');
+            clearInterval(timerInterval);
+            timerInterval = null;
             message.showModal();
         }
         else {
