@@ -334,10 +334,14 @@ function mazeSpace() {
         timerInterval = null;
 
         if (highScores.length < 5) {
-            {highScoreForm.classList.remove('display-none')}
+            {highScoreForm.classList.remove('display-none');
+             highScoreInput.value = '';
+            }
         } 
         else if (currentTime < highScores[highScores.length - 1].time) {
-            {highScoreForm.classList.remove('display-none')}
+            {highScoreForm.classList.remove('display-none');
+             highScoreInput.value = '';
+            }
         }
         else {highScoreForm.classList.add('display-none')}
 
