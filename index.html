@@ -48,14 +48,20 @@
         <!-- DIALOGS -->
         <dialog class="how-to-play-dialog" id="how-to-play-dialog" open>
             <div class="dialog-center">
-                <h1>Colors Maze!</h1>
-                <h3>How to Play</h3>
+                <h2>How to Play</h2>
                 <hr>
                 <ul>
                 <li>Each square in this maze contains a primary color: red, blue, or yellow.</li>
                 <li>Follow the path color to reach the bottom and escape the maze.</li>
                 <li>Use the arrows or keys W&uarr;, D&rarr;, S&darr;, and A&larr; to move your piece.</li>
-                <li>Adjacent squares will light up with a secondary color clue. The clue is a color that can be created by the primary color of that space. For example, a green square could be a clue for yellow or blue.</li>
+                <li>Adjacent squares will light up with a secondary color clue. The clue is a color that can be created by the primary color of that space.
+                    <br>
+                    <div class="yellow"></div> + <div class="blue"></div> = <div class="adjacent-g"></div>, so green could be a clue for yellow or blue.
+                    <br>
+                    <div class="blue"></div> + <div class="red"></div> = <div class="adjacent-v"></div>, so purple could be a clue for blue or red.
+                    <br>
+                    <div class="red"></div> + <div class="yellow"></div> = <div class="adjacent-o"></div>, so orange could be a clue for red or yellow.
+                </li>
                 <li>Landing on the restart color will send you back to the beginning and reset your clues -- but you can keep trying to find a new route!</li>
                 <li>If you land on the avoid color -- game over!</li>
                 <li>There are a number of "powerups" you can use at any time to help you navigate your way through the maze.</li>
@@ -91,19 +97,19 @@
         <div class="container-md game-info">
             <div class="color-info">
                 <div class="color-container">
-                    <h3>Path color:</h3>
+                    <h3 id="path-color-text">Path color:</h3>
                     <div class="color" id="path-color"></div>
                 </div>
                 <div class="color-container">
-                    <h3>Restart color:</h3>
+                    <h3 id="restart-color-text">Restart color:</h3>
                     <div class="color" id="restart-color"></div>
                 </div>
                 <div class="color-container">
-                    <h3>Avoid color:</h3>
+                    <h3 id="avoid-color-text">Avoid color:</h3>
                     <div class="color" id="avoid-color"></div>
                 </div>
             </div>
-            <!-- POWErUPS -->
+            <!-- POWERUPS -->
             <div class="powerups-container text-center">
                 <h3>Powerups</h3>
                 <div class="powerups-options">
