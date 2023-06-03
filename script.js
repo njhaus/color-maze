@@ -1,10 +1,3 @@
-// TO FIX:
-// TO DO:
-// 1. High Scores -- Stop timer on game win/lose.
-// 2. background color 'blasts'
-// 3. Mobile friendly
-
-
 
 // MAZE CREATOR
 
@@ -24,6 +17,12 @@ let getColors =[...colors]
 let character = document.getElementById('character');
 let charTop = 0;
 let charLeft = 0;
+let charMoveDist = 50;
+let screenWidth = window.innerWidth;
+let leftButton = document.getElementById('keypad-left');
+let upButton = document.getElementById('keypad-up');
+let downButton = document.getElementById('keypad-down');
+let rightButton = document.getElementById('keypad-right');
 
 // timer variables
 
@@ -78,33 +77,45 @@ let rowK = Array.from(document.getElementById('row-k').children);
 let rowL = Array.from(document.getElementById('row-l').children);
 let rowN = Array.from(document.getElementById('row-n').children);
 
-
 let mazeGrid = [rowA, rowB, rowC, rowD, rowE, rowF, rowH, rowI, rowJ, rowK, rowL, rowN];
-
+for (let i = 0; i < mazeGrid.length; i++) {
+    mazeGrid[i].push(i);
+}
 
 // POWERUP VARIABLES
 
 
 let horizontalPowerup = document.getElementById('horizontal-powerup');
 let horizontalRemaining = document.getElementById('horizontal-powerup-remaining');
-let verticalPowerup = document.getElementById('vertical-powerup');
-let verticalRemaining = document.getElementById('vertical-powerup-remaining');
+let adjacentPowerup = document.getElementById('adjacent-powerup');
+let adjacentRemaining = document.getElementById('adjacent-powerup-remaining');
 let squareChange = document.getElementById('sq-change');
 let squareChangeRemaining = document.getElementById('sq-change-remaining');
 let colorSwitch = document.getElementById('color-switch');
 let colorSwitchRemaining = document.getElementById('color-switch-remaining');
-let powerups = [horizontalPowerup, verticalPowerup, squareChange, colorSwitch];
+let powerups = [horizontalPowerup, adjacentPowerup, squareChange, colorSwitch];
 
+// media query variables
+
+let mobileMedia = window.matchMedia("only screen and (orientation: portrait) and (max-width: 600px)"); 
+let pathColorText = document.getElementById('path-color-text');
+let restartColorText = document.getElementById('restart-color-text');
+let avoidColorText = document.getElementById('avoid-color-text');
 
 // maze setup onload/restart
+
 // Create maze and start timer onLoad
+
 window.addEventListener('load', (openPage));
 let timerInterval = setInterval(timer, 1000);
 
+// OPEN PAGE
 
 function openPage() {
     createMaze();
     populateHighScores();
+    mobileMediaCheck();
+    checkScreenSize();
 }
 
 function createMaze() {
@@ -116,7 +127,7 @@ function createMaze() {
     charLeft = 0;
     character.style.transform = `translate(0px, 0px) `;
     horizontalRemaining.innerText = '2';
-    verticalRemaining.innerText = '2';
+    adjacentRemaining.innerText = '2';
     squareChangeRemaining.innerText = '4';
     colorSwitchRemaining.innerText = '1';
     secondsNum = 0;
@@ -174,14 +185,14 @@ function timer() {
     hours.innerText = hoursNum < 10 ? ('0' + hoursNum.toString()) : hoursNum.toString();
     minutes.innerText = minutesNum < 10 ? ('0' + minutesNum.toString()) : minutesNum.toString();
     seconds.innerText = secondsNum < 10 ? ('0' + secondsNum.toString()) : secondsNum.toString();
-    currentTime = hoursNum.toString() + minutesNum.toString() + secondsNum.toString();
-
+    currentTime = hours.innerText + minutes.innerText + seconds.innerText;
+    // currentTime = hoursNum.toString() + minutesNum.toString() + secondsNum.toString();
 }
 
 // Populate High score list from local storage
 
 function populateHighScores() { 
-    if (localStorage.getItem('highScores') != null) {
+    if (localStorage.getItem('highScores') !== null) {
         highScores = JSON.parse(localStorage.getItem('highScores'));
         for (let i=0; i < highScoresListItems.length; i++) {
             if (highScores[i]) {
@@ -192,6 +203,41 @@ function populateHighScores() {
     }
 }
 
+// check media function 
+
+function mobileMediaCheck() {
+    if (mobileMedia.matches) {
+        pathColorText.innerText = 'Path:';
+        restartColorText.innerText = 'Restart:';
+        avoidColorText.innerText = 'Avoid:';
+    }
+    else {
+        pathColorText.innerText = 'Path color';
+        restartColorText.innerText = 'Restart color';
+        avoidColorText.innerText = 'Avoid color';
+    }
+}
+
+// Check Screen Size
+
+function checkScreenSize() {
+    screenWidth = window.innerWidth;
+    if (screenWidth <= 600) {
+        charMoveDist = 25;
+    }
+    else {
+        charMoveDist = 50;
+    }
+}
+
+
+window.addEventListener('resize', windowResize);
+
+function windowResize() {
+    checkScreenSize();
+    // put character in correct place (This makes the first square light up if done before any move, but oh well)
+    moveChar(0, 0);
+}
 
 // DIALOGS
 // dialog FUNCTIONS
@@ -253,26 +299,7 @@ highScoreSubmit.addEventListener('click', (event) => {
 
 // MOVE CHARACTER
 
-function moveChar(moveX, moveY) {
-    let x = (moveX * 50) + (charLeft * 50);
-    let y = (moveY * 50) + (charTop * 50);
-    let transform = `translate(${x}px, ${y}px) `;
-    // console.log('function call');
-
-    if (((charLeft + moveX) > -1) &&
-        ((charLeft + moveX) < 12) &&
-        ((charTop + moveY) > -1) &&
-        ((charTop + moveY) < 14)) {
-        charLeft += moveX;
-        charTop += moveY;
-        // console.log('transfrom:', transform, 'charTop:', charTop, 'charLeft:', charLeft);
-        character.style.transform = transform;
-        // make white space disappear
-        // wait a second OR do a transform
-        mazeSpace();
-    }
-}
-
+// move character on keydown
 document.addEventListener('keydown', (e) => {
     if (message.getAttribute('open') === null 
         && howToPlayDialog.getAttribute('open') === null 
@@ -298,9 +325,37 @@ document.addEventListener('keydown', (e) => {
     }
 })
 
+// Move characters on button click
+leftButton.addEventListener('click', (e) => {moveChar(-1, 0)});
+upButton.addEventListener('click', (e) => {moveChar(0, -1)});
+downButton.addEventListener('click', (e) => {moveChar(0, 1)});
+rightButton.addEventListener('click', (e) => {moveChar(1, 0)});
+
+// Move character funciton
+function moveChar(moveX, moveY) {
+    let x = (moveX * charMoveDist) + (charLeft * charMoveDist);
+    let y = (moveY * charMoveDist) + (charTop * charMoveDist);
+    let transform = `translate(${x}px, ${y}px) `;
+
+
+    if (((charLeft + moveX) > -1) &&
+        ((charLeft + moveX) < 12) &&
+        ((charTop + moveY) > -1) &&
+        ((charTop + moveY) < 14)) {
+        charLeft += moveX;
+        charTop += moveY;
+        character.style.transform = transform;
+        // make white space disappear
+        // wait a second OR do a transform
+        mazeSpace();
+    }
+}
+
+
 // position in maze arrays
 // Lose and restart function
 // reveal adjacent clues function
+
 
 function mazeSpace() {
     let adjColorChooser = Math.floor(Math.random() * 2);
@@ -332,18 +387,17 @@ function mazeSpace() {
         messageTextSmall.innerText = "Your time was " + hoursNum + " hours, " + minutesNum + " minutes, " + secondsNum + " seconds. Play again?";
         clearInterval(timerInterval);
         timerInterval = null;
+        highScoreInput.value = '';
 
         if (highScores.length < 5) {
-            {highScoreForm.classList.remove('display-none');
-             highScoreInput.value = '';
-            }
+            highScoreForm.classList.remove('display-none');
+        
         } 
-        else if (currentTime < highScores[highScores.length - 1].time) {
-            {highScoreForm.classList.remove('display-none');
-             highScoreInput.value = '';
-            }
+        else if (currentTime < highScores[4].timeNumber) {
+            highScoreForm.classList.remove('display-none');
+        
         }
-        else {highScoreForm.classList.add('display-none')}
+        else {}
 
         messageImg.innerHTML = '';
         closeDialog.classList.add('display-none');
@@ -483,40 +537,61 @@ function horizontalHandler(e) {
     horizontalPowerup.checked = false;
 }
 
-// Vertical Powerup
+// adjacent Powerup 
 
-verticalPowerup.addEventListener('click', (e) => {
+adjacentPowerup.addEventListener('click', (e) => {
     e.stopImmediatePropagation();
     let target = e.target;
     powerups.filter(powerup => powerup != target).filter(powerup => powerup.checked === true).forEach(powerup => powerup.click());
-    if (verticalPowerup.checked && parseInt(verticalRemaining.innerText) > 0) {
-        blankSquares.forEach(square => square.addEventListener('click', verticalHandler));
+    if (adjacentPowerup.checked && parseInt(adjacentRemaining.innerText) > 0) {
+        blankSquares.forEach(square => square.addEventListener('click', adjacentHandler));
     }
-    else if ((!verticalPowerup.checked && parseInt(verticalRemaining.innerText) > 0)) {
-        blankSquares.forEach(square => square.removeEventListener('click', verticalHandler));
+    else if ((!adjacentPowerup.checked && parseInt(adjacentRemaining.innerText) > 0)) {
+        blankSquares.forEach(square => square.removeEventListener('click', adjacentHandler));
     }
     else{
-        verticalPowerup.checked = false;
+        adjacentPowerup.checked = false;
         console.log('no more!')}
 })
 
-function verticalHandler(e) {
-    let target = e.target;
-    let column = blankSquares.indexOf(target);
-    let columnSquares = [];
+function adjacentHandler(e) {
+    let target = e.target.parentElement;
+    let findRow = mazeGrid.filter(row => row.includes(target)).flat();
+    let squareRow = findRow[12];
+    // ^^ I put this into the frist index of each array as a hack because javascript simply cannot find the index of the Row array EVEN AFTER IT FINDS THE EXACT SAME ELEMENT SAVED AS THE TARGET AND PULLS ITS ROW ARRAY FROM THE MAZEGRID
+    // let squareCol = squareRow.indexOf(target); 
+    // ^^why doesn't this work???? Even when I put squareRow.includes(target), it returns undefined EVEN THOUGH IT LITERALLY JUST FOUND IT IN THE PREVIOUS VARIABLE.
+    let squareCol = blankSquares.indexOf(e.target);
+    while (squareCol >= 12) 
+    {squareCol -= 12}
 
-    while (column > 12) 
-    {column -= 12}
+    let revealSquares = [];
 
-    for (let i = column; i < blankSquares.length; i += 12) {
-                columnSquares.push(blankSquares[i]);
-            }
-        columnSquares.forEach(square => square.classList.add('hidden'));
-        blankSquares.forEach(square => square.removeEventListener('click', verticalHandler));
-        verticalRemaining.innerText = (parseInt(verticalRemaining.innerText) - 1);
-        if (parseInt(verticalRemaining.innerText) === 0) {verticalPowerup.disabled = true;}
-        verticalPowerup.checked = false;
+    let upLeft = {row: squareRow - 1, col: squareCol -1};
+    let up = {row: squareRow - 1, col: squareCol};
+    let upRight = {row: squareRow - 1, col: squareCol + 1};
+    let left = {row: squareRow , col: squareCol - 1};
+    let center = {row: squareRow, col: squareCol};
+    let right = {row: squareRow, col: squareCol + 1};
+    let downLeft = {row: squareRow + 1, col: squareCol -1};
+    let down = {row: squareRow + 1, col: squareCol};
+    let downRight = {row: squareRow + 1, col: squareCol + 1};
+    let squarePositions = [upLeft, up, upRight, left, center, right, downLeft, down, downRight];
+
+    for (let i = 0; i < squarePositions.length; i++) {
+        let x = squarePositions[i].row;
+        let y = squarePositions[i].col;
+        if (x >=0 && x <= 11 && y >=0 && y <= 11) {
+            revealSquares.push(mazeGrid[x][y].firstChild)
+        }
     }
+
+        revealSquares.forEach(square => square.classList.add('hidden'));
+        blankSquares.forEach(square => square.removeEventListener('click', adjacentHandler));
+        adjacentRemaining.innerText = (parseInt(adjacentRemaining.innerText) - 1);
+        if (parseInt(adjacentRemaining.innerText) === 0) {adjacentPowerup.disabled = true;}
+        adjacentPowerup.checked = false;
+}
 
     // Square switch powerup
 
@@ -590,3 +665,24 @@ function colorSwitchHandler(e) {
     colorSwitch.checked = false;
 
 }
+
+// OLD VERTICAL POWERUP FUNCTION : DISCONTINUED AND CHANGED TO ADJACENT FUNCTION
+// NOTE: this could have been done more easily using the row variables
+
+// function verticalHandler(e) {
+//     let target = e.target;
+//     let column = blankSquares.indexOf(target);
+//     let columnSquares = [];
+
+//     while (column > 12) 
+//     {column -= 12}
+
+//     for (let i = column; i < blankSquares.length; i += 12) {
+//                 columnSquares.push(blankSquares[i]);
+//             }
+//         columnSquares.forEach(square => square.classList.add('hidden'));
+//         blankSquares.forEach(square => square.removeEventListener('click', verticalHandler));
+//         verticalRemaining.innerText = (parseInt(verticalRemaining.innerText) - 1);
+//         if (parseInt(verticalRemaining.innerText) === 0) {verticalPowerup.disabled = true;}
+//         verticalPowerup.checked = false;
+//     }
