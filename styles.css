@@ -125,6 +125,7 @@ header i {
     background-color: black;
     font-family: 'Sniglet';
     position: relative;
+    margin-top: -1px;
 
 }
 
@@ -178,7 +179,7 @@ dialog button {
     width: 70%;
     height: fit-content;
     min-width: 330px;
-}
+    }
 
 .how-to-play-dialog li div {
     width: 20px;
@@ -220,6 +221,8 @@ dialog::backdrop {
     align-items: top;
     color: white;
     z-index: 5;
+    max-width: 800px !important;
+    padding-top: 10px;
 }
 
 .game-info > div {
@@ -236,14 +239,21 @@ dialog::backdrop {
 .color-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: end;
     margin: 10px;
     gap: 7px;
 
 }
 
+
 .color-container h3 {
     margin-bottom: 0px;
+    flex-grow: 1;
+    
+}
+
+.powerups-container {
+    min-width: 100px;
 }
 
 .powerups-options {
@@ -261,17 +271,20 @@ dialog::backdrop {
 
 .powerup-section {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .powerup-section i {
     position: absolute;
-    left: 50%;
+    /* left: 50%; */
     top: 0;
     font-size: 1rem;
     color: black;
     width: 25px;
     height: 25px;
-    transform: translate(-50%);
+    /* transform: translate(-50%); */
     pointer-events: none;
     border-radius: 5px;
 }
@@ -307,12 +320,12 @@ dialog::backdrop {
     width: 200px;
     height: fit-content;
     top: 35px;
-    transform: translate(-100px);
     border-radius: 5px;
     padding: 5px;
     color: black;
     box-shadow: -1px 1px 3px black;
     z-index: 9;
+    font-size: 1rem;
 }
 
 .powerup-label strong {
@@ -344,7 +357,8 @@ dialog::backdrop {
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     top: -7px;
-    left: 103px;
+    left: 50%;
+    transform: translateX(-50%)
 }
 
 .powerup:hover ~ .powerup-label {
@@ -424,18 +438,24 @@ dialog::backdrop {
     display: none;
 }
 
+/* .keypad {
+    display: none;
+} */
+
 
 /* Mobile */
 
 @media only screen and (orientation: portrait) and (max-width: 600px) {
     body {
-        width: 100vw;
+        width: fit-content;
         height: fit-content;
         background-color: black;
         min-width: initial;
         min-height: initial;
         overflow-x: hidden;
     }
+
+    /* header */
 
     header i {
         width: 25px;
@@ -458,16 +478,17 @@ dialog::backdrop {
 
     .main {
         height: fit-content;
-        min-height: 900px;
+        min-height: 100vh;
+        min-width: 300px;
     }
 
     .how-to-play-dialog {
         width: 100vw !important;
-        height: 100vh !important;
-        position: fixed;
-        top: 0;
+        height: 100% !important;
         overflow-y: scroll;
     }
+
+    /* game-info section */
 
 
     .game-info h3 {
@@ -489,30 +510,91 @@ dialog::backdrop {
     }
 
     .powerup-label {
-        transform: translate(-90px);
-        font-size: 0.9rem;
+        font-size: 0.7rem;
+        max-width: 150px;
     }
 
     .powerup-label strong {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
+
+    /* Maze */
 
     .maze-container {
         width: 300px;
         height: 300px;
-        margin-top: 30px;
+        padding: 0 !important;
+        margin-top: 50px;
+        position: relative;
+        z-index: 0;
     }
-
-
+    
+    
     .character {
         width: 25px;
         height: 25px;
         top: -25px;
+        transform: translate(0px, 0px);
+        transition: all 0.3 ease;
     }
-
+    
+    .row {
+        margin: 0 !important;
+    }
+    
     .color-square {
         height: 25px !important;
         width: 25px !important;
+        border: 1px solid black;
+        padding: 0 !important;
+    }
+
+    /* keypad */
+
+    .mobile-keypad-container {
+        text-align: center;
+        margin-top: 30px;
+        height: 5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .keypad {
+        box-sizing: initial;
+        font-size: 1.5rem;
+        line-height: 32px;
+        color: black;
+        background-color: #ffc0cb;
+        height: 32px;
+        width: 32px;
+        border-top: 3px solid #ffe0eb;
+        border-left: 3px solid #ffe0eb;
+        border-bottom: 3px solid #dd909b;
+        border-right: 3px solid #dd909b;
+    }
+
+    .keypad:active {
+        border-bottom: 3px solid #ffe0eb;
+        border-right: 3px solid #ffe0eb;
+        border-top: 3px solid #dd909b;
+        border-left: 3px solid #dd909b;
+    }
+
+    .keypad i {
+        margin: 0 auto;
+    }
+
+    .keypad-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        height: 100%;
+        gap: 5px;
+
     }
 
 }
