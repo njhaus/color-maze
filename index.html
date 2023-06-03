@@ -46,14 +46,14 @@
     <div class="main">
 
         <!-- DIALOGS -->
-        <dialog class="how-to-play-dialog" id="how-to-play-dialog" open>
+        <dialog class="how-to-play-dialog" id="how-to-play-dialog">
             <div class="dialog-center">
                 <h2>How to Play</h2>
                 <hr>
                 <ul>
                 <li>Each square in this maze contains a primary color: red, blue, or yellow.</li>
                 <li>Follow the path color to reach the bottom and escape the maze.</li>
-                <li>Use the arrows or keys W&uarr;, D&rarr;, S&darr;, and A&larr; to move your piece.</li>
+                <li>Use the arrows or keys W&uarr;, D&rarr;, S&darr;, and A&larr; to move your piece. (For mobile devices, use the buttons which appear at the bottom of the screen)</li>
                 <li>Adjacent squares will light up with a secondary color clue. The clue is a color that can be created by the primary color of that space.
                     <br>
                     <div class="yellow"></div> + <div class="blue"></div> = <div class="adjacent-g"></div>, so green could be a clue for yellow or blue.
@@ -114,7 +114,7 @@
                 <h3>Powerups</h3>
                 <div class="powerups-options">
                     <div class="row">
-                        <div class="col powerup-section">
+                        <div class="col-3 powerup-section">
                             <input name="horizontal-powerup" type="checkbox" class="powerup" id="horizontal-powerup"/>
                             <i class="bi bi-arrow-left-right powerup-icon"></i>
                             <label for="horizontal-powerup" class="powerup-label" id="horizontal-label">
@@ -123,16 +123,16 @@
                                 &lpar;<span id="horizontal-powerup-remaining">2</span> remaining&rpar;
                             </label>
                         </div>
-                        <div class="col powerup-section">
-                            <input name="vertical-powerup" type="checkbox" class="powerup" id="vertical-powerup"/>
-                            <i class="bi bi-arrow-down-up powerup-icon"></i>
-                            <label for="vertical-powerup" class="powerup-label" id="vertical-label">
-                                <strong>Column reveal</strong><br>
-                                Click a column to reveal all colors in that column.<br>
-                                &lpar;<span id="vertical-powerup-remaining">2</span> remaining&rpar;
+                        <div class="col-3 powerup-section">
+                            <input name="adjacent-powerup" type="checkbox" class="powerup" id="adjacent-powerup"/>
+                            <i class="bi bi bi-arrows-move powerup-icon"></i>
+                            <label for="adjacent-powerup" class="powerup-label" id="adjacent-label">
+                                <strong>Adjacent reveal</strong><br>
+                                Click a square to reveal all adjacent squares.<br>
+                                &lpar;<span id="adjacent-powerup-remaining">2</span> remaining&rpar;
                             </label>
                         </div>
-                        <div class="col powerup-section">
+                        <div class="col-3 powerup-section">
                             <input name="sq-change" type="checkbox" class="powerup" id="sq-change"/>
                             <i class="bi bi-shuffle powerup-icon"></i>
                             <label for="sq-change" class="powerup-label" id="sq-change-label">
@@ -141,7 +141,7 @@
                                 &lpar;<span id="sq-change-remaining">4</span> remaining&rpar;
                             </label>
                         </div>
-                        <div class="col powerup-section">
+                        <div class="col-3 powerup-section">
                             <input name="color-switch" type="checkbox" class="powerup" id="color-switch"/>
                             <i class="bi bi-arrow-repeat powerup-icon"></i>
                             <label for="color-switch" class="powerup-label" id="color-switch-label">
@@ -163,9 +163,7 @@
             <div class="maze-container mx-auto">
                 <div class="character" id="character"></div>
                 <div class="row row-a" id="row-a">
-                    <div class="col-1 a-1 color-square test-square" id="test-square">
-                        <div class="w-100 h-100 blank-square"></div>
-                    </div>
+                    <div class="col-1 a-1 color-square"><div class="w-100 h-100 blank-square"></div></div>
                     <div class="col-1 a-2 color-square"><div class="w-100 h-100 blank-square"></div></div>
                     <div class="col-1 a-3 color-square"><div class="w-100 h-100 blank-square"></div></div>
                     <div class="col-1 a-4 color-square"><div class="w-100 h-100 blank-square"></div></div>
@@ -333,6 +331,14 @@
                     <div class="col-1 n-12 color-square"><div class="w-100 h-100 blank-square"></div></div>
                 </div>
             </div> 
+            <div class="mobile-keypad-container">
+                <div class="keypad keypad-left" id="keypad-left"><i class="bi bi-arrow-left"></i></div>
+                <div class="keypad-section">
+                    <div class="keypad keypad-up" id="keypad-up"><i class="bi bi-arrow-up"></i></div>
+                    <div class="keypad keypad-down" id="keypad-down"><i class="bi bi-arrow-down"></i></div>
+                </div>
+                <div class="keypad keypad-right" id="keypad-right"><i class="bi bi-arrow-right"></i></div>
+            </div>
         </div>
     </div>
    
