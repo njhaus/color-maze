@@ -45,6 +45,7 @@ let restartMaze = document.getElementById('restart-maze');
 let howToPlayIcon = document.getElementById('how-to-play-icon');
 let howToPlayDialog = document.getElementById('how-to-play-dialog');
 let howToPlayButton = document.getElementById('how-to-play-button');
+let howToPlayTop = document.getElementById('how-to-play-top');
 
 let highScoreForm = document.getElementById('high-score-form');
 let highScoreInput = document.getElementById('high-score-input');
@@ -249,6 +250,7 @@ closeDialog.addEventListener('click', ()=> {
 
 howToPlayIcon.addEventListener('click', () => {
     howToPlayDialog.showModal();
+    howToPlayTop.scrollIntoView('alignToTop');
 })
 
 howToPlayButton.addEventListener('click', () => {
