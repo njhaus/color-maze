@@ -17,12 +17,13 @@ body {
 header {
     height: fit-content;
     background-color: black;
-    padding-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     position: relative;
 }
 
 header img {
-    width: 50%;
+    width: 60%;
     max-width: 500px;
 }
 
@@ -256,8 +257,15 @@ dialog::backdrop {
     min-width: 100px;
 }
 
+.powerups-container h3, .time-container h3 {
+    padding-bottom: 10px;
+}
+
 .powerups-options {
     position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
 }
 
 .powerup {
@@ -458,9 +466,9 @@ dialog::backdrop {
     /* header */
 
     header i {
-        width: 25px;
-        height: 25px;
-        font-size: 1rem;
+        width: 30px;
+        height: 30px;
+        font-size: 1.1rem;
     }
 
 
@@ -495,19 +503,38 @@ dialog::backdrop {
         font-size: 1rem
     }
 
-
+/* 
     .color {
          width: 20px;
          min-width: 20px;
          height: 20px;
-    }
+    } */
         
-    .powerup-section i {
+    .powerups-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .powerups-options {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, 25px);
+        grid-template-rows: repeat(2, 25px);
+        justify-items: center;
+        gap: 20px;
+    }
+
+    .powerups-container h3, .time-container h3 {
+        padding-bottom: 5px;
+    }
+
+    /* .powerup-section i {
         font-size: 0.9rem;
         width: 20px;
         height: 20px;
        
-    }
+    } */
 
     .powerup-label {
         font-size: 0.7rem;
