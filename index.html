@@ -48,7 +48,7 @@
         <!-- DIALOGS -->
         <dialog class="how-to-play-dialog" id="how-to-play-dialog">
             <div class="dialog-center">
-                <h2>How to Play</h2>
+                <h2 id="how-to-play-top">How to Play</h2>
                 <hr>
                 <ul>
                 <li>Each square in this maze contains a primary color: red, blue, or yellow.</li>
@@ -92,6 +92,12 @@
             <button id="close-dialog" method="dialog">Ok</button>
             <button id="restart-maze" class="display-none" method="dialog">Restart</button>
         </dialog>
+        <dialog class="landscape-dialog" id="landscape-dialog" open>
+            <div class="landscape-center">
+                <h2>Please turn your screen!</h2>
+                <p>Colors Maze must be in portrait orientation in order to play.</p>
+        </dialog>
+        
 
         <!-- GAME INFO -->
         <div class="container-md game-info">
