@@ -212,8 +212,8 @@ dialog button {
 
 .landscape-dialog {
     display: none;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     position: fixed;
     top: 0;
     left: 0;
@@ -482,7 +482,9 @@ dialog::backdrop {
         height: fit-content;
         background-color: black;
         min-width: initial;
+        height: fit-content;
         min-height: initial;
+        max-height: 850px;
         overflow-x: hidden;
     }
 
@@ -530,12 +532,6 @@ dialog::backdrop {
         font-size: 1rem
     }
 
-/* 
-    .color {
-         width: 20px;
-         min-width: 20px;
-         height: 20px;
-    } */
         
     .powerups-container {
         display: flex;
@@ -555,13 +551,6 @@ dialog::backdrop {
     .powerups-container h3, .time-container h3 {
         padding-bottom: 5px;
     }
-
-    /* .powerup-section i {
-        font-size: 0.9rem;
-        width: 20px;
-        height: 20px;
-       
-    } */
 
     .powerup-label {
         font-size: 0.7rem;
@@ -660,9 +649,10 @@ dialog::backdrop {
     }
 
     body {
-        height: 0px;
-        min-height: 0px;
-        max-height: 0px;
+        height: 100dvh;
+        min-height: 100dvh;
+        max-height: 100dvh;
+        width: 100vw;
         overflow: hidden;
     }
 
