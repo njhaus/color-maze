@@ -649,9 +649,9 @@ dialog::backdrop {
     }
 
     body {
-        height: 100dvh;
-        min-height: 100dvh;
-        max-height: 100dvh;
+        height: 100vh;
+        min-height: 330px;
+        max-height: 450px;
         width: 100vw;
         min-width: 850px;
         overflow: hidden;
